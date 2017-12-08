@@ -12,15 +12,16 @@ public:
 
 	// GETTERS SETTERS
 	// position
-	double getPositionX();
-	double getPositionY();
-	double getPositionZ();
-	void updatePosition(double x, double y, double z);
+	float getPositionX();
+	float getPositionY();
+	float getPositionZ();
+	void updatePosition();
+	void setPosition(float x, float y, float z);
 	// speed
-	double getSpeedX();
-	double getSpeedY();
-	double getSpeedZ();
-	void updateSpeed(double x, double y, double z);
+	float getSpeedX();
+	float getSpeedY();
+	float getSpeedZ();
+	void setSpeed(float x, float y, float z);
 	// color
 	int getColorR();
 	int getColorG();
@@ -39,12 +40,12 @@ public:
 	void draw();
 
 private:
-	double m_posX;
-	double m_posY;
-	double m_posZ;
-	double m_speedX;
-	double m_speedY;
-	double m_speedZ;
+	float m_posX;
+	float m_posY;
+	float m_posZ;
+	float m_speedX;
+	float m_speedY;
+	float m_speedZ;
 	int m_colorR;
 	int m_colorG;
 	int m_colorB;

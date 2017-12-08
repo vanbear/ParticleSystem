@@ -5,7 +5,11 @@ class ParticleLow :
 	public Particle
 {
 public:
-	ParticleLow();
+	ParticleLow(float x, float y, float z);
 	~ParticleLow();
+
+	void draw();
+	void setDrag();
+	void setPath();
 };
 

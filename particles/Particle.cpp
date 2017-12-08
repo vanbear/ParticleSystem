@@ -5,7 +5,6 @@ using namespace std;
 
 Particle::Particle()
 {
-	cout << "Particle created";
 }
 
 Particle::~Particle()
@@ -14,19 +13,25 @@ Particle::~Particle()
 }
 
 // ---------------------------------- POSITION ----------------------------
-double Particle::getPositionX()
+float Particle::getPositionX()
 {
 	return m_posX;
 }
-double Particle::getPositionY()
+float Particle::getPositionY()
 {
 	return m_posY;
 }
-double Particle::getPositionZ()
+float Particle::getPositionZ()
 {
 	return m_posZ;
 }
-void Particle::updatePosition(double x, double y, double z)
+void Particle::updatePosition()
+{
+	m_posX += m_speedX;
+	m_posY += m_speedY;
+	m_posZ += m_speedZ;
+}
+void Particle::setPosition(float x, float y, float z)
 {
 	m_posX = x;
 	m_posY = y;
@@ -34,19 +39,19 @@ void Particle::updatePosition(double x, double y, double z)
 }
 
 // ------------------------------------- SPEED ---------------------------
-double Particle::getSpeedX()
+float Particle::getSpeedX()
 {
 	return m_speedX;
 }
-double Particle::getSpeedY()
+float Particle::getSpeedY()
 {
 	return m_speedY;
 }
-double Particle::getSpeedZ()
+float Particle::getSpeedZ()
 {
 	return m_speedZ;
 }
-void Particle::updateSpeed(double x, double y, double z)
+void Particle::setSpeed(float x, float y, float z)
 {
 	m_speedX = x;
 	m_speedY = y;
