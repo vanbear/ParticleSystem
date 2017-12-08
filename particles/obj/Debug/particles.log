@@ -1,8 +1,7 @@
-﻿  main.cpp
+﻿  Particle.cpp
+  ParticleLow.cpp
   ofApp.cpp
   Unknown compiler version - please run the configure tests and report the results
-  Unknown compiler version - please run the configure tests and report the results
-     Trwa tworzenie biblioteki bin\particles_debug.lib i obiektu bin\particles_debug.exp
   particles.vcxproj -> D:\Studia\Semestr 5\ParticleSystem\particles\bin\particles_debug.exe
   
   	                   9	C:\OF\export\vs\Win32\
