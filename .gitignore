@@ -47,5 +47,5 @@ Temporary Items
 .apdisk
 
 .vs
-particles/bin/
-particles/obj/
+particles\bin\
+particles\obj\
