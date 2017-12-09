@@ -4,33 +4,58 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	// Window Settings
 	ofSetWindowShape(1024, 720);
+
+	//Scene Settings
 	ofSetBackgroundColor(0, 0, 0);
+
+	// Particles Counter
+	f_particlesCountFont.loadFont("verdana.ttf", 8);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	float randem = ofRandomf(); cout << "randem" << randem << endl;
-	if (randem > .5)
+	float randem = ofRandomf(); //cout << "randem" << randem << endl;
+	if (randem > .2)
 	{
-		v_lowparticles.push_back(new ParticleLow(0, ofRandom(720), ofRandom(1000)));
-		v_lowparticles.back()->setSpeed(1, 0, 0);
+		v_lowparticles.push_back(new ParticleLow(-1000.0f, ofRandom(720), ofRandom(-1000,1000)));
+		v_lowparticles.back()->setSpeed(10, 0, 0);
 	}
 
+	// If there are any particles
 	if (v_lowparticles.size()>0)
-		for (size_t i = 0; i < v_lowparticles.size()-1; i++)
+		for (size_t i = 0; i < v_lowparticles.size(); i++)
 		{
-			v_lowparticles[i]->updatePosition();
+			ParticleLow* particle = v_lowparticles[i];
+			// destroy particle when lifetime exceeded, else just update and increase time lived
+			if (particle->m_livedTime >= particle->m_lifeTime) 
+				v_lowparticles.erase(v_lowparticles.begin() + i);
+			else 
+			{ 
+				particle->updatePosition(); 
+				particle->m_livedTime++;
+			}
+
 		}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+	// draw all particles
 	if (v_lowparticles.size()>0)
-		for (size_t i = 0; i < v_lowparticles.size()-1; i++)
+		for (size_t i = 0; i < v_lowparticles.size(); i++)
 		{
 			v_lowparticles[i]->draw();
 		}
+
+	//FPS counter
+	char fpsStr[255];
+	sprintf(fpsStr, "frame rate: %.0f \nparticles: %d", ofGetFrameRate(), v_lowparticles.size());
+	f_particlesCountFont.drawString(fpsStr, 10, 15);
+
+
 }
 
 //--------------------------------------------------------------

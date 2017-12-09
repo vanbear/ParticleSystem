@@ -7,8 +7,10 @@ class Particle
 {
 public:
 	Particle();
-	virtual ~Particle();
+	~Particle();
 
+	int m_lifeTime;
+	int m_livedTime = 0;
 
 	// GETTERS SETTERS
 	// position
@@ -28,9 +30,6 @@ public:
 	int getColorB();
 	int getColorA();
 	void setColor(int r, int g, int b, int a);
-	// lifetime
-	int getLifeTime();
-	void setLifeTime(int);
 
 	// moving mutators
 	virtual void setPath() = 0;
@@ -50,7 +49,5 @@ private:
 	int m_colorG;
 	int m_colorB;
 	int m_colorA;
-	int m_lifeTime;
-
 	
 };

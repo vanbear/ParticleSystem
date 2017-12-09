@@ -24,4 +24,5 @@ class ofApp : public ofBaseApp{
 
 		std::vector<ParticleLow*> v_lowparticles;
 		
+		ofTrueTypeFont f_particlesCountFont;
 };

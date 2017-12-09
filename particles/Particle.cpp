@@ -9,7 +9,6 @@ Particle::Particle()
 
 Particle::~Particle()
 {
-	cout << "Particle destroyed" << endl;
 }
 
 // ---------------------------------- POSITION ----------------------------
