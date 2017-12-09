@@ -29,12 +29,12 @@ void ofApp::update(){
 		{
 			ParticleLow* particle = v_lowparticles[i];
 			// destroy particle when lifetime exceeded, else just update and increase time lived
-			if (particle->m_livedTime >= particle->m_lifeTime) 
+			if (particle->isDead())
 				v_lowparticles.erase(v_lowparticles.begin() + i);
 			else 
 			{ 
 				particle->updatePosition(); 
-				particle->m_livedTime++;
+				particle->m_lifespan--;
 			}
 
 		}
@@ -52,7 +52,7 @@ void ofApp::draw(){
 
 	//FPS counter
 	char fpsStr[255];
-	sprintf(fpsStr, "frame rate: %.0f \nparticles: %d", ofGetFrameRate(), v_lowparticles.size());
+	sprintf(fpsStr, "FPS: %.0f \nparticles: %d", ofGetFrameRate(), (int)v_lowparticles.size());
 	f_particlesCountFont.drawString(fpsStr, 10, 15);
 
 

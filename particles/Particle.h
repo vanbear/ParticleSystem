@@ -9,8 +9,7 @@ public:
 	Particle();
 	~Particle();
 
-	int m_lifeTime;
-	int m_livedTime = 0;
+	int m_lifespan;
 
 	// GETTERS SETTERS
 	// position
@@ -34,6 +33,7 @@ public:
 	// moving mutators
 	virtual void setPath() = 0;
 	virtual void setDrag() = 0;
+	bool isDead();
 
 	// drawing
 	void draw();

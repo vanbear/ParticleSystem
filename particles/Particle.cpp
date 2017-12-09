@@ -80,3 +80,15 @@ void Particle::setColor(int r, int g, int b, int a)
 	m_colorB = b;
 	m_colorA = a;
 }
+
+bool Particle::isDead()
+{
+	if (m_lifespan <= 0)
+	{
+		cout << "Particle should be dead now." << endl;
+		return true;
+	}
+	
+	else return false;
+}
+
