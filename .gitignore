@@ -49,3 +49,4 @@ Temporary Items
 .vs
 particles/bin/
 particles/obj/
+!particles/bin/data/
