@@ -14,7 +14,6 @@ ParticleLow::ParticleLow(float x, float y, float z)
 
 ParticleLow::~ParticleLow()
 {
-	cout << "Particle Low destroyed." << endl;
 }
 
 void ParticleLow::draw()

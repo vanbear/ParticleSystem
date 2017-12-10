@@ -176,12 +176,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ofApp.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleLow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="ofApp.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleLow.h" />

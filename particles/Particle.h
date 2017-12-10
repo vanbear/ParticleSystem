@@ -36,7 +36,7 @@ public:
 	bool isDead();
 
 	// drawing
-	void draw();
+	virtual void draw() = 0;
 
 private:
 	float m_posX;

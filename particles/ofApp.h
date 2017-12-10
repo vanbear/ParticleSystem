@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ParticleLow.h"
+#include "Particle.h"
+#include "Emitter.h"
 
 class ofApp : public ofBaseApp{
 
@@ -23,6 +25,8 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		std::vector<ParticleLow*> v_lowparticles;
+		Emitter* em;
+		Emitter* em2;
 		
 		ofTrueTypeFont f_particlesCountFont;
 };

@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "Emitter.h"
 #include "Particle.h"
 #include "ParticleLow.h"
 
@@ -12,11 +13,13 @@ void ofApp::setup(){
 
 	// Particles Counter
 	f_particlesCountFont.loadFont("verdana.ttf", 8);
+	em = new Emitter(100.0f, 100.0f, 0.0f);
+	em2 = new Emitter(100.0f, 200.0f, 0.0f);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	float randem = ofRandomf(); //cout << "randem" << randem << endl;
+	/*float randem = ofRandomf(); //cout << "randem" << randem << endl;
 	if (randem > .2)
 	{
 		v_lowparticles.push_back(new ParticleLow(-1000.0f, ofRandom(720), ofRandom(-1000,1000)));
@@ -37,12 +40,16 @@ void ofApp::update(){
 				particle->m_lifespan--;
 			}
 
-		}
+		}*/
+	
+	em->updateParticles();
+	em2->updateParticles();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+	/*
 	// draw all particles
 	if (v_lowparticles.size()>0)
 		for (size_t i = 0; i < v_lowparticles.size(); i++)
@@ -52,15 +59,25 @@ void ofApp::draw(){
 
 	//FPS counter
 	char fpsStr[255];
-	sprintf(fpsStr, "FPS: %.0f \nparticles: %d", ofGetFrameRate(), (int)v_lowparticles.size());
-	f_particlesCountFont.drawString(fpsStr, 10, 15);
+	sprintf(fpsStr, "FPS: %.0f \nparticles low: %d", ofGetFrameRate(), (int)v_lowparticles.size());
+	f_particlesCountFont.drawString(fpsStr, 10, 15);*/
+	em->drawParticles();
+	em2->drawParticles();
 
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	switch (key)
+	{
+		case 'a':
+			em->activate();
+			em2->activate();
+			break;
+		default:
+			break;
+	}
 }
 
 //--------------------------------------------------------------
