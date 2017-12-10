@@ -16,10 +16,12 @@ class Emitter
 		float getPositionX();
 		float getPositionY();
 		float getPositionZ();
+		void updatePosition(float x, float y, float z);
 
 		std::vector<Particle*> particlesHolder;
 
 		void drawParticles();
+		void drawSelf();
 		void updateParticles();
 
 	private:

@@ -3,6 +3,11 @@
 #include "Particle.h"
 #include "ParticleLow.h"
 
+using namespace std;
+
+double icoPosX;
+double icoPosY;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	// Window Settings
@@ -13,58 +18,73 @@ void ofApp::setup(){
 
 	// Particles Counter
 	f_particlesCountFont.loadFont("verdana.ttf", 8);
-	em = new Emitter(100.0f, 100.0f, 0.0f);
-	em2 = new Emitter(100.0f, 200.0f, 0.0f);
+
+	// Sphere
+	double icoPosX = ofGetWidth()*.5;
+	double icoPosY = ofGetHeight()*.5;
+
+	icoSphere.setRadius(100);
+	icoSphere.setPosition(icoPosX, icoPosY, 0);
+	icoSphere.setResolution(1);
+
+	// get icoSphere vertices actual locations
+	ofMesh mesh = icoSphere.getMesh();
+	vector<ofVec3f>& icoSphereVertices = mesh.getVertices();
+
+	//create emitters in these locations
+	cout << icoSphereVertices.size() << " icosphere vertices" << endl;
+	for (size_t i=0; i < icoSphereVertices.size(); i++)
+	{
+		cout << i << endl;
+		float x = icoSphere.getX() + icoSphereVertices[i][0];
+		float y = icoSphere.getY() + icoSphereVertices[i][1];
+		float z = icoSphere.getZ() + icoSphereVertices[i][2];
+		v_emittersLow.push_back(new Emitter(x, y, z));
+	}
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	/*float randem = ofRandomf(); //cout << "randem" << randem << endl;
-	if (randem > .2)
-	{
-		v_lowparticles.push_back(new ParticleLow(-1000.0f, ofRandom(720), ofRandom(-1000,1000)));
-		v_lowparticles.back()->setSpeed(10, 0, 0);
-	}
+	// spin dat sphere
+	float spinX = sin(ofGetElapsedTimef()*.35f);
+	float spinY = cos(ofGetElapsedTimef()*.075f);
+	icoSphere.rotate(spinX, 1.0, 0.0, 0.0);
+	icoSphere.rotate(spinY, 0, 1.0, 0.0);
 
-	// If there are any particles
-	if (v_lowparticles.size()>0)
-		for (size_t i = 0; i < v_lowparticles.size(); i++)
-		{
-			ParticleLow* particle = v_lowparticles[i];
-			// destroy particle when lifetime exceeded, else just update and increase time lived
-			if (particle->isDead())
-				v_lowparticles.erase(v_lowparticles.begin() + i);
-			else 
-			{ 
-				particle->updatePosition(); 
-				particle->m_lifespan--;
-			}
-
-		}*/
 	
-	em->updateParticles();
-	em2->updateParticles();
+	//update vertices locations
+	ofQuaternion rotation = icoSphere.getLocalTransformMatrix().getRotate().asVec3();
+
+	vector<ofVec3f> icoSphereVertices = icoSphere.getMesh().getVertices();
+	for (ofVec3f & v : icoSphereVertices) {
+		v.rotateRad(rotation.x(), rotation.y(), rotation.z());
+	}
+	
+	//update emitters locations
+	for (size_t i = 0; i < icoSphereVertices.size(); i++)
+	{
+		v_emittersLow[i]->updatePosition(icoSphereVertices[i][0]+icoSphere.getX(), icoSphereVertices[i][1]+icoSphere.getY(), icoSphereVertices[i][2]+icoSphere.getZ());
+		v_emittersLow[i]->updateParticles();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	
 
-	/*
-	// draw all particles
-	if (v_lowparticles.size()>0)
-		for (size_t i = 0; i < v_lowparticles.size(); i++)
-		{
-			v_lowparticles[i]->draw();
-		}
+	// icoSphere
+	
+	
+	//ofNoFill();
+	icoSphere.drawWireframe();
 
-	//FPS counter
-	char fpsStr[255];
-	sprintf(fpsStr, "FPS: %.0f \nparticles low: %d", ofGetFrameRate(), (int)v_lowparticles.size());
-	f_particlesCountFont.drawString(fpsStr, 10, 15);*/
-	em->drawParticles();
-	em2->drawParticles();
-
-
+	for (size_t i = 0; i < v_emittersLow.size(); i++)
+	{
+		v_emittersLow[i]->drawParticles();
+		v_emittersLow[i]->drawSelf();
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -72,8 +92,10 @@ void ofApp::keyPressed(int key){
 	switch (key)
 	{
 		case 'a':
-			em->activate();
-			em2->activate();
+			for (size_t i = 0; i < v_emittersLow.size(); i++)
+			{
+				v_emittersLow[i]->activate();
+			}
 			break;
 		default:
 			break;

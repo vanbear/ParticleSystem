@@ -52,9 +52,9 @@ float Particle::getSpeedZ()
 }
 void Particle::setSpeed(float x, float y, float z)
 {
-	m_speedX = x;
-	m_speedY = y;
-	m_speedZ = z;
+	this->m_speedX = x;
+	this->m_speedY = y;
+	this->m_speedZ = z;
 }
 
 int Particle::getColorR()
@@ -83,12 +83,7 @@ void Particle::setColor(int r, int g, int b, int a)
 
 bool Particle::isDead()
 {
-	if (m_lifespan <= 0)
-	{
-		cout << "Particle should be dead now." << endl;
-		return true;
-	}
-	
+	if (m_lifespan <= 0) return true;
 	else return false;
 }
 
