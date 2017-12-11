@@ -2,6 +2,7 @@
 #include "ParticleLow.h"
 #include "Particle.h"
 #include <ofGraphics.h>
+#include <ofAppRunner.h>
 
 
 Emitter::Emitter(float x, float y, float z)
@@ -45,7 +46,15 @@ void Emitter::insertToHolder(Particle* particle)
 
 void Emitter::activate()
 {
-	ParticleLow* particle = new ParticleLow(this->m_posX, this->m_posY, this->m_posZ, 1, 1, 1);
+	float x = this->m_posX;
+	float y = this->m_posY;
+	float z = this->m_posZ;
+	ofVec3f v_em(x,y,z); // emitter position
+	ofVec3f v_center(ofGetWidth()*0.5,ofGetHeight()*0.5,0.0); // center of the screen
+	ofVec3f dist = (v_em - v_center).getNormalized();
+
+	ParticleLow* particle = new ParticleLow(x, y, z, dist[0], dist[1], dist[2]);
+
 	insertToHolder(particle);
 }
 

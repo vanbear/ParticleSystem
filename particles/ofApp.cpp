@@ -12,6 +12,7 @@ double icoPosY;
 void ofApp::setup(){
 	// Window Settings
 	ofSetWindowShape(1024, 720);
+	ofSetFrameRate(60);
 
 	//Scene Settings
 	ofSetBackgroundColor(0, 0, 0);
@@ -41,7 +42,6 @@ void ofApp::setup(){
 		float z = icoSphere.getZ() + icoSphereVertices[i][2];
 		v_emittersLow.push_back(new Emitter(x, y, z));
 	}
-
 }
 
 //--------------------------------------------------------------
@@ -55,15 +55,16 @@ void ofApp::update(){
 	
 	//update vertices locations
 	ofQuaternion rotation = icoSphere.getLocalTransformMatrix().getRotate().asVec3();
-
+	cout << rotation << endl;
 	vector<ofVec3f> icoSphereVertices = icoSphere.getMesh().getVertices();
 	for (ofVec3f & v : icoSphereVertices) {
-		v.rotateRad(rotation.x(), rotation.y(), rotation.z());
+		v.rotateRad(rotation.x(), rotation.y(), 0.0);
 	}
 	
 	//update emitters locations
 	for (size_t i = 0; i < icoSphereVertices.size(); i++)
 	{
+		v_emittersLow[i]->getPositionX();
 		v_emittersLow[i]->updatePosition(icoSphereVertices[i][0]+icoSphere.getX(), icoSphereVertices[i][1]+icoSphere.getY(), icoSphereVertices[i][2]+icoSphere.getZ());
 		v_emittersLow[i]->updateParticles();
 	}
@@ -84,7 +85,11 @@ void ofApp::draw(){
 		v_emittersLow[i]->drawParticles();
 		v_emittersLow[i]->drawSelf();
 	}
-	
+
+	char fpsStr[255]; // an array of chars
+	sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
+	f_particlesCountFont.drawString(fpsStr, 100, 100);
+
 }
 
 //--------------------------------------------------------------

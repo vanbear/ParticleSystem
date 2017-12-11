@@ -7,8 +7,8 @@ ParticleLow::ParticleLow(float x, float y, float z, float vx, float vy, float vz
 	
 	this->setPosition(x, y, z);
 	this->setSpeed(vx, vy, vz);
-	this->m_lifespan = ofRandom(10, 100);
-	this->setColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255));
+	this->m_lifespan = 200;
+	this->setColor(ofRandom(128, 255), 10, 10, m_lifespan);
 
 	//cout << "Particle Low created at x: " << x << " y: " << y << " z: " << z << " | with lifetime " << m_lifeTime << endl;;
 }
