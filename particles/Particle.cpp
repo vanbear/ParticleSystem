@@ -87,4 +87,8 @@ bool Particle::isDead()
 	else return false;
 }
 
+void draw(ofImage* txt)
+{
+}
+
 

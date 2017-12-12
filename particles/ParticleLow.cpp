@@ -1,15 +1,17 @@
 #include "ParticleLow.h"
 #include <ofGraphics.h>
-
+#include <ofImage.h>
+#include "ofApp.h"
 
 ParticleLow::ParticleLow(float x, float y, float z, float vx, float vy, float vz)
 {
 	
 	this->setPosition(x, y, z);
-	this->setSpeed(vx, vy, vz);
-	this->m_lifespan = 200;
+	this->setSpeed(2*vx, 2*vy, 2*vz);
+	this->m_lifespan = 100;
 	this->setColor(ofRandom(128, 255), 10, 10, m_lifespan);
 
+	
 	//cout << "Particle Low created at x: " << x << " y: " << y << " z: " << z << " | with lifetime " << m_lifeTime << endl;;
 }
 
@@ -18,11 +20,15 @@ ParticleLow::~ParticleLow()
 {
 }
 
-void ParticleLow::draw()
+void ParticleLow::draw(ofImage* txt)
 {
-	ofSetColor(this->getColorR(), this->getColorG(), this->getColorB(), this->m_lifespan);
-	ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(),5);
-	ofSetColor(ofColor(255, 255, 255));
+	//ofSetColor(this->getColorR(), this->getColorG(), this->getColorB(), this->m_lifespan*2);
+	//ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(),5);
+	
+	ofPushMatrix();
+	ofTranslate(0,0, this->getPositionZ());
+	txt->draw(this->getPositionX(), this->getPositionY());
+	ofPopMatrix();
 }
 
 void ParticleLow::setPath()

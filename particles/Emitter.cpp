@@ -10,7 +10,7 @@ Emitter::Emitter(float x, float y, float z)
 	this->m_posX = x;
 	this->m_posY = y;
 	this->m_posZ = z;
-	std::cout << "Emitter created at " << x <<" "<< y << " "<< z << std::endl;
+	//std::cout << "Emitter created at " << x <<" "<< y << " "<< z << std::endl;
 }
 
 
@@ -63,12 +63,12 @@ int Emitter::getParticlesCount()
 	return (int)this->particlesHolder.size();
 }
 
-void Emitter::drawParticles()
+void Emitter::drawParticles(ofImage* txt)
 {
 	if (this->particlesHolder.size()>0)
 		for (size_t i = 0; i < particlesHolder.size(); i++)
 		{
-			this->particlesHolder[i]->draw();
+			this->particlesHolder[i]->draw(txt);
 		}
 }
 void Emitter::drawSelf()

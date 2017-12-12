@@ -20,7 +20,7 @@ class Emitter
 
 		std::vector<Particle*> particlesHolder;
 
-		void drawParticles();
+		void drawParticles(ofImage* txt);
 		void drawSelf();
 		void updateParticles();
 

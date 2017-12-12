@@ -17,6 +17,11 @@ void ofApp::setup(){
 	//Scene Settings
 	ofSetBackgroundColor(0, 0, 0);
 
+	// load texture
+	myTexture.loadImage("nyan.png");
+	myTexture.resize(myTexture.getWidth() / 10, myTexture.getHeight() / 10);
+	myTexture.setAnchorPoint(myTexture.getWidth() / 2, myTexture.getHeight() / 2);
+
 	// Particles Counter
 	f_particlesCountFont.loadFont("verdana.ttf", 8);
 
@@ -33,15 +38,14 @@ void ofApp::setup(){
 	vector<ofVec3f>& icoSphereVertices = mesh.getVertices();
 
 	//create emitters in these locations
-	cout << icoSphereVertices.size() << " icosphere vertices" << endl;
 	for (size_t i=0; i < icoSphereVertices.size(); i++)
 	{
-		cout << i << endl;
 		float x = icoSphere.getX() + icoSphereVertices[i][0];
 		float y = icoSphere.getY() + icoSphereVertices[i][1];
 		float z = icoSphere.getZ() + icoSphereVertices[i][2];
 		v_emittersLow.push_back(new Emitter(x, y, z));
 	}
+
 }
 
 //--------------------------------------------------------------
@@ -51,7 +55,6 @@ void ofApp::update(){
 	float spinY = cos(ofGetElapsedTimef()*.075f);
 
 	//update vertices locations
-	ofQuaternion rotation = icoSphere.getLocalTransformMatrix().getRotate().asVec3();
 	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	for (ofVec3f & v : icoSphereVertices) {
 		v.rotate(spinX, spinY, 0);
@@ -75,17 +78,21 @@ void ofApp::draw(){
 	
 	
 	//ofNoFill();
+	ofSetColor(ofColor(255, 255, 255));
 	icoSphere.drawWireframe();
 
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for (size_t i = 0; i < v_emittersLow.size(); i++)
 	{
-		v_emittersLow[i]->drawParticles();
+		v_emittersLow[i]->drawParticles(&myTexture);
 		//v_emittersLow[i]->drawSelf();
 	}
+	ofDisableBlendMode();
 
+	ofSetColor(ofColor(255, 255, 255));
 	char fpsStr[255]; // an array of chars
-	sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
-	f_particlesCountFont.drawString(fpsStr, 100, 100);
+	sprintf(fpsStr, "FPS: %f\nParticles: %d", ofGetFrameRate(),countParticles());
+	f_particlesCountFont.drawString(fpsStr, 1, 10);
 
 }
 
@@ -152,4 +159,15 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+int ofApp::countParticles()
+{
+	int s = 0;
+	for (int i = 0; i < v_emittersLow.size(); i++)
+	{
+		s += v_emittersLow[i]->getParticlesCount();
+	}
+	return s;
 }

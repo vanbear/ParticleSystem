@@ -24,9 +24,12 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+		int countParticles();
+
 		ofIcoSpherePrimitive icoSphere;
 
 		std::vector<Emitter*> v_emittersLow;
 		
 		ofTrueTypeFont f_particlesCountFont;
+		ofImage myTexture;
 };

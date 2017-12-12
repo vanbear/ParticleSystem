@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <ofImage.h>
 
 class Particle
 {
@@ -36,7 +37,7 @@ public:
 	bool isDead();
 
 	// drawing
-	virtual void draw() = 0;
+	virtual void draw(ofImage* txt) = 0;
 
 private:
 	float m_posX;
