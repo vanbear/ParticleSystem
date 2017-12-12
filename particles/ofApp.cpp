@@ -49,31 +49,28 @@ void ofApp::update(){
 	// spin dat sphere
 	float spinX = sin(ofGetElapsedTimef()*.35f);
 	float spinY = cos(ofGetElapsedTimef()*.075f);
-	icoSphere.rotate(spinX, 1.0, 0.0, 0.0);
-	icoSphere.rotate(spinY, 0, 1.0, 0.0);
 
-	
 	//update vertices locations
 	ofQuaternion rotation = icoSphere.getLocalTransformMatrix().getRotate().asVec3();
-	cout << rotation << endl;
-	vector<ofVec3f> icoSphereVertices = icoSphere.getMesh().getVertices();
+	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	for (ofVec3f & v : icoSphereVertices) {
-		v.rotateRad(rotation.x(), rotation.y(), 0.0);
+		v.rotate(spinX, spinY, 0);
 	}
 	
 	//update emitters locations
 	for (size_t i = 0; i < icoSphereVertices.size(); i++)
 	{
-		v_emittersLow[i]->getPositionX();
-		v_emittersLow[i]->updatePosition(icoSphereVertices[i][0]+icoSphere.getX(), icoSphereVertices[i][1]+icoSphere.getY(), icoSphereVertices[i][2]+icoSphere.getZ());
+		v_emittersLow[i]->updatePosition(
+			icoSphereVertices[i][0]+icoSphere.getX(), 
+			icoSphereVertices[i][1]+icoSphere.getY(), 
+			icoSphereVertices[i][2]+icoSphere.getZ()
+		);
 		v_emittersLow[i]->updateParticles();
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
-
 	// icoSphere
 	
 	
@@ -83,7 +80,7 @@ void ofApp::draw(){
 	for (size_t i = 0; i < v_emittersLow.size(); i++)
 	{
 		v_emittersLow[i]->drawParticles();
-		v_emittersLow[i]->drawSelf();
+		//v_emittersLow[i]->drawSelf();
 	}
 
 	char fpsStr[255]; // an array of chars
