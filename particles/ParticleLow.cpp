@@ -30,7 +30,8 @@ void ParticleLow::draw(ofImage* txt)
 	//ofTranslate(0,0, this->getPositionZ());
 	ofSetColor(ofColor(120, 0, 0));
 	//txt->draw(this->getPositionX(), this->getPositionY());
-	ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(), 2);
+	ofDrawSphere(this->getPositionX(), this->getPositionY(), this->getPositionZ(),2);
+	//ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(), 2);
 	ofSetColor(ofColor(255, 255, 255));
 	ofDisableBlendMode();
 	//ofPopMatrix();
