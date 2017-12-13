@@ -78,8 +78,11 @@ void Emitter::drawSelf()
 	float y = this->m_posY;
 	float z = this->m_posZ;
 	
+	ofSetLineWidth(4);
 	ofDrawLine(x - size, y, z, x + size, y, z);
 	ofDrawLine(x, y - size, z, x, y + size, z);
+	ofSetLineWidth(1);
+	ofSetColor(ofColor(255,255,255));
 }
 
 void Emitter::updateParticles()

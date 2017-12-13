@@ -16,6 +16,8 @@ void ofApp::setup(){
 
 	//Scene Settings
 	ofSetBackgroundColor(0, 0, 0);
+	debugActive = true;
+	rotateActive = false;
 
 	// load texture
 	myTexture.loadImage("nova_1.png");
@@ -55,6 +57,7 @@ void ofApp::update(){
 
 	//update vertices locations
 	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
+	if (rotateActive)
 	for (ofVec3f & v : icoSphereVertices) {
 		v.rotate(spinX, spinY, 0);
 	}
@@ -84,14 +87,20 @@ void ofApp::draw(){
 	for (int i = 0; i < v_emittersLow.size(); i++)
 	{
 		v_emittersLow[i]->drawParticles(&myTexture);
-		v_emittersLow[i]->drawSelf();
+		
+	}
+	if (debugActive)
+	{
+		ofSetColor(ofColor(0, 255, 0));
+		v_emittersLow[0]->drawSelf();
+		ofSetColor(ofColor(255, 0, 0));
+		v_emittersLow[ii]->drawSelf();
 	}
 	ofDisableBlendMode();
-
 	ofSetColor(ofColor(255, 255, 255));
 	char fpsStr[255]; // an array of chars
-	sprintf(fpsStr, "FPS: %f\nParticles: %d", ofGetFrameRate(),countParticles());
-	f_particlesCountFont.drawString(fpsStr, 1, 10);
+	sprintf(fpsStr, "Selected Emitter:%d\nFPS: %f\nParticles: %d\nA - activate emitters\nD - debug info\nS - toggle rotating", ii,ofGetFrameRate(),countParticles());
+	if (debugActive) f_particlesCountFont.drawString(fpsStr, 1, 10);
 
 }
 
@@ -100,10 +109,20 @@ void ofApp::keyPressed(int key){
 	switch (key)
 	{
 		case 'a':
+		case 'A':
 			for (size_t i = 0; i < v_emittersLow.size(); i++)
 			{
 				v_emittersLow[i]->activate();
 			}
+			ii++;
+			break;
+		case 'd':
+		case 'D':
+			debugActive = !debugActive;
+			break;
+		case 's':
+		case 'S':
+			rotateActive = !rotateActive;
 			break;
 		default:
 			break;

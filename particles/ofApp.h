@@ -32,4 +32,9 @@ class ofApp : public ofBaseApp{
 		
 		ofTrueTypeFont f_particlesCountFont;
 		ofImage myTexture;
+
+		bool debugActive;
+		bool rotateActive;
+
+		int ii = 0;
 };
