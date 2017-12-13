@@ -19,6 +19,7 @@ void ofApp::setup(){
 	debugActive = true;
 	rotateActive = false;
 
+	cout << size(tab_lowIndex) << endl;
 	// load texture
 	myTexture.loadImage("nova_1.png");
 	myTexture.setAnchorPoint(myTexture.getWidth() / 2, myTexture.getHeight() / 2);
@@ -89,41 +90,98 @@ void ofApp::draw(){
 		v_emittersLow[i]->drawParticles(&myTexture);
 		
 	}
+	
 	if (debugActive)
 	{
+		// draw all emitters
+		for (size_t i = 0; i < v_emittersLow.size(); i++)
+		{
+			v_emittersLow[i]->drawSelf();
+		}
+		
+		// draw ring emitters (blue)
+		for (int i = 0; i < size(tab_lowIndex); i++)
+		{
+			ofSetColor(ofColor(0, 0, 255));
+			v_emittersLow[tab_lowIndex[i]]->drawSelf();
+		}
+
+		// draw first emitter (green)
 		ofSetColor(ofColor(0, 255, 0));
 		v_emittersLow[0]->drawSelf();
+
+		// draw selected emitter (red)
 		ofSetColor(ofColor(255, 0, 0));
 		v_emittersLow[ii]->drawSelf();
+
 	}
 	ofDisableBlendMode();
+
+	// DRAW DEBUG INFO
 	ofSetColor(ofColor(255, 255, 255));
 	char fpsStr[255]; // an array of chars
-	sprintf(fpsStr, "Selected Emitter:%d\nFPS: %f\nParticles: %d\nA - activate emitters\nD - debug info\nS - toggle rotating", ii,ofGetFrameRate(),countParticles());
+	// create string
+	sprintf(fpsStr, 
+		"\
+		FPS: %f\n\
+		Particles: %d\n\
+		N or M - Select Emitter:%d\n\
+		A - activate all emitters\n\
+		D - debug info\nS - toggle rotating\n\
+		asd\
+		", 
+		ofGetFrameRate(), countParticles(),ii);
 	if (debugActive) f_particlesCountFont.drawString(fpsStr, 1, 10);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	switch (key)
 	{
+		// emit
 		case 'a':
 		case 'A':
-			for (size_t i = 0; i < v_emittersLow.size(); i++)
-			{
-				v_emittersLow[i]->activate();
-			}
-			ii++;
+			activateAllParticles();
+			
 			break;
+		// debug mode
 		case 'd':
 		case 'D':
 			debugActive = !debugActive;
 			break;
+		// select emitter
+		case 'n':
+		case 'N':
+			ii--;
+			if (ii < 0) ii = v_emittersLow.size()-1;
+			break;
+		case 'm':
+		case 'M':
+			ii++;
+			if (ii > v_emittersLow.size()-1) ii = 0;
+			break;
+		// toggle rotate
 		case 's':
 		case 'S':
 			rotateActive = !rotateActive;
 			break;
+		// rotate up
+		case 'u':
+		case 'U':
+			for (ofVec3f & v : icoSphereVertices) {
+				v.rotate(1, 0, 0);
+			}
+			break;
+		// rotate down
+		case 'j':
+		case 'J':
+			for (ofVec3f & v : icoSphereVertices) {
+				v.rotate(-1, 0, 0);
+			}
+			break;
+		// default
 		default:
 			break;
 	}
@@ -188,4 +246,12 @@ int ofApp::countParticles()
 		s += v_emittersLow[i]->getParticlesCount();
 	}
 	return s;
+}
+
+void ofApp::activateAllParticles()
+{
+	for (size_t i = 0; i < v_emittersLow.size(); i++)
+	{
+		v_emittersLow[i]->activate();
+	}
 }
