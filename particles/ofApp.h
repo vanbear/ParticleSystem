@@ -25,7 +25,10 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		int countParticles();
-		void activateAllParticles();
+		void activateAllEmitters();
+		void activateSelectedEmitter(int i);
+		void activateRingEmitters();
+		void activateNRandomEmitters(int n);
 
 		ofIcoSpherePrimitive icoSphere;
 
@@ -37,7 +40,7 @@ class ofApp : public ofBaseApp{
 		bool debugActive;
 		bool rotateActive;
 
-		int ii = 0;
-		int tab_lowIndex[28] = { 13, 14, 18, 19, 22, 23, 24, 26, 30, 32, 49, 50, 
+		int selectedParticleIndex = 0;
+		int tab_RingParticlesIndex[28] = { 13, 14, 18, 19, 22, 23, 24, 26, 30, 32, 49, 50, 
 			51, 52, 57, 59, 63, 65, 70, 71, 75, 76, 78, 82, 83, 84, 85, 86 };
 };

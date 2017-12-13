@@ -19,7 +19,6 @@ void ofApp::setup(){
 	debugActive = true;
 	rotateActive = false;
 
-	cout << size(tab_lowIndex) << endl;
 	// load texture
 	myTexture.loadImage("nova_1.png");
 	myTexture.setAnchorPoint(myTexture.getWidth() / 2, myTexture.getHeight() / 2);
@@ -77,20 +76,18 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	// icoSphere
-	
-	
-	//ofNoFill();
-	ofSetColor(ofColor(255, 255, 255));
+	// draw icoSphere
+	ofSetColor(ofColor(200, 200, 200));
 	icoSphere.drawWireframe();
 
-	
+	// update particles as objects created by each emitter
 	for (int i = 0; i < v_emittersLow.size(); i++)
 	{
 		v_emittersLow[i]->drawParticles(&myTexture);
 		
 	}
 	
+	// debug info
 	if (debugActive)
 	{
 		// draw all emitters
@@ -100,10 +97,10 @@ void ofApp::draw(){
 		}
 		
 		// draw ring emitters (blue)
-		for (int i = 0; i < size(tab_lowIndex); i++)
+		for (int i = 0; i < size(tab_RingParticlesIndex); i++)
 		{
 			ofSetColor(ofColor(0, 0, 255));
-			v_emittersLow[tab_lowIndex[i]]->drawSelf();
+			v_emittersLow[tab_RingParticlesIndex[i]]->drawSelf();
 		}
 
 		// draw first emitter (green)
@@ -112,7 +109,7 @@ void ofApp::draw(){
 
 		// draw selected emitter (red)
 		ofSetColor(ofColor(255, 0, 0));
-		v_emittersLow[ii]->drawSelf();
+		v_emittersLow[selectedParticleIndex]->drawSelf();
 
 	}
 	ofDisableBlendMode();
@@ -126,11 +123,14 @@ void ofApp::draw(){
 		FPS: %f\n\
 		Particles: %d\n\
 		N or M - Select Emitter:%d\n\
+		D - toggle debug info\n\
+		R - toggle rotating\n\
 		A - activate all emitters\n\
-		D - debug info\nS - toggle rotating\n\
-		asd\
+		S - activate selected emitter\n\
+		Z - activate ring emitters\n\
+		X - activate random emitters\
 		", 
-		ofGetFrameRate(), countParticles(),ii);
+		ofGetFrameRate(), countParticles(), selectedParticleIndex);
 	if (debugActive) f_particlesCountFont.drawString(fpsStr, 1, 10);
 
 }
@@ -140,11 +140,22 @@ void ofApp::keyPressed(int key){
 	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	switch (key)
 	{
-		// emit
+		// emitters 
 		case 'a':
 		case 'A':
-			activateAllParticles();
-			
+			activateAllEmitters();
+			break;
+		case 's':
+		case 'S':
+			activateSelectedEmitter(selectedParticleIndex);
+			break;
+		case 'z':
+		case 'Z':
+			activateRingEmitters();
+			break;
+		case 'x':
+		case 'X':
+			activateNRandomEmitters(10);
 			break;
 		// debug mode
 		case 'd':
@@ -154,17 +165,17 @@ void ofApp::keyPressed(int key){
 		// select emitter
 		case 'n':
 		case 'N':
-			ii--;
-			if (ii < 0) ii = v_emittersLow.size()-1;
+			selectedParticleIndex--;
+			if (selectedParticleIndex < 0) selectedParticleIndex = v_emittersLow.size()-1;
 			break;
 		case 'm':
 		case 'M':
-			ii++;
-			if (ii > v_emittersLow.size()-1) ii = 0;
+			selectedParticleIndex++;
+			if (selectedParticleIndex > v_emittersLow.size()-1) selectedParticleIndex = 0;
 			break;
 		// toggle rotate
-		case 's':
-		case 'S':
+		case 'r':
+		case 'R':
 			rotateActive = !rotateActive;
 			break;
 		// rotate up
@@ -248,10 +259,34 @@ int ofApp::countParticles()
 	return s;
 }
 
-void ofApp::activateAllParticles()
+void ofApp::activateAllEmitters()
 {
 	for (size_t i = 0; i < v_emittersLow.size(); i++)
 	{
 		v_emittersLow[i]->activate();
+	}
+}
+
+void ofApp::activateSelectedEmitter(int i)
+{
+		v_emittersLow[i]->activate();
+}
+
+
+void ofApp::activateRingEmitters()
+{
+	for (int i = 0; i < size(tab_RingParticlesIndex); i++)
+	{
+		ofSetColor(ofColor(0, 0, 255));
+		v_emittersLow[tab_RingParticlesIndex[i]]->activate();
+	}
+}
+
+void ofApp::activateNRandomEmitters(int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		int emitter = ofRandom(0, v_emittersLow.size());
+		activateSelectedEmitter(emitter);
 	}
 }
