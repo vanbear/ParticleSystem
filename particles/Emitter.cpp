@@ -85,7 +85,7 @@ void Emitter::drawSelf()
 void Emitter::updateParticles()
 {
 	if (this->particlesHolder.size()>0)
-		for (size_t i = 0; i < particlesHolder.size(); i++)
+		for (int i = 0; i < particlesHolder.size(); i++)
 		{
 			Particle* particle = this->particlesHolder[i];
 			if (particle->isDead())

@@ -25,10 +25,15 @@ void ParticleLow::draw(ofImage* txt)
 	//ofSetColor(this->getColorR(), this->getColorG(), this->getColorB(), this->m_lifespan*2);
 	//ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(),5);
 	
-	ofPushMatrix();
-	ofTranslate(0,0, this->getPositionZ());
-	txt->draw(this->getPositionX(), this->getPositionY());
-	ofPopMatrix();
+	//ofPushMatrix();
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	//ofTranslate(0,0, this->getPositionZ());
+	ofSetColor(ofColor(120, 0, 0));
+	//txt->draw(this->getPositionX(), this->getPositionY());
+	ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(), 2);
+	ofSetColor(ofColor(255, 255, 255));
+	ofDisableBlendMode();
+	//ofPopMatrix();
 }
 
 void ParticleLow::setPath()

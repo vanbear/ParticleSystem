@@ -18,8 +18,7 @@ void ofApp::setup(){
 	ofSetBackgroundColor(0, 0, 0);
 
 	// load texture
-	myTexture.loadImage("nyan.png");
-	myTexture.resize(myTexture.getWidth() / 10, myTexture.getHeight() / 10);
+	myTexture.loadImage("nova_1.png");
 	myTexture.setAnchorPoint(myTexture.getWidth() / 2, myTexture.getHeight() / 2);
 
 	// Particles Counter
@@ -61,7 +60,7 @@ void ofApp::update(){
 	}
 	
 	//update emitters locations
-	for (size_t i = 0; i < icoSphereVertices.size(); i++)
+	for (int i = 0; i < icoSphereVertices.size(); i++)
 	{
 		v_emittersLow[i]->updatePosition(
 			icoSphereVertices[i][0]+icoSphere.getX(), 
@@ -81,11 +80,11 @@ void ofApp::draw(){
 	ofSetColor(ofColor(255, 255, 255));
 	icoSphere.drawWireframe();
 
-	ofEnableBlendMode(OF_BLENDMODE_ADD);
-	for (size_t i = 0; i < v_emittersLow.size(); i++)
+	
+	for (int i = 0; i < v_emittersLow.size(); i++)
 	{
 		v_emittersLow[i]->drawParticles(&myTexture);
-		//v_emittersLow[i]->drawSelf();
+		v_emittersLow[i]->drawSelf();
 	}
 	ofDisableBlendMode();
 
