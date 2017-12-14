@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ParticleLow.h"
+#include "ParticleBlueCircles.h"
 #include "Particle.h"
 #include "Emitter.h"
 
@@ -30,17 +30,32 @@ class ofApp : public ofBaseApp{
 		void activateRingEmitters();
 		void activateNRandomEmitters(int n);
 
+		// sphere
 		ofIcoSpherePrimitive icoSphere;
 
-		std::vector<Emitter*> v_emittersLow;
+		// emitters holder
+		std::vector<Emitter*> v_emitters;
 		
+		// drawing
 		ofTrueTypeFont f_particlesCountFont;
 		ofImage myTexture;
 
+		// audio
+		ofSoundPlayer music;
+		float audioPan, audioPanMax;
+		float avgSound; float avgSoundPrevious;
+		float* fftSmoothed;
+		int nBandsToGet;
+		bool musicIsPlaying;
+
+		int m_tickCount;
+		int m_tickFrequency;
+		// setting togglers
 		bool debugActive;
 		bool rotateActive;
 
-		int selectedParticleIndex = 0;
-		int tab_RingParticlesIndex[28] = { 13, 14, 18, 19, 22, 23, 24, 26, 30, 32, 49, 50, 
+		// emitter indexes
+		int selectedEmitterIndex = 0;
+		int t_RingEmittersIndex[28] = { 13, 14, 18, 19, 22, 23, 24, 26, 30, 32, 49, 50, 
 			51, 52, 57, 59, 63, 65, 70, 71, 75, 76, 78, 82, 83, 84, 85, 86 };
 };

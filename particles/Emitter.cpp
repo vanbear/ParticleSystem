@@ -1,5 +1,5 @@
 #include "Emitter.h"
-#include "ParticleLow.h"
+#include "ParticleBlueCircles.h"
 #include "Particle.h"
 #include <ofGraphics.h>
 #include <ofAppRunner.h>
@@ -53,7 +53,7 @@ void Emitter::activate()
 	ofVec3f v_center(ofGetWidth()*0.5,ofGetHeight()*0.5,0.0); // center of the screen
 	ofVec3f dist = (v_em - v_center).getNormalized();
 
-	ParticleLow* particle = new ParticleLow(x, y, z, dist[0], dist[1], dist[2]);
+	ParticleBlueCircles* particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
 
 	insertToHolder(particle);
 }

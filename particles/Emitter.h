@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Particle.h"
-#include "ParticleLow.h"
+#include "ParticleBlueCircles.h"
 
 class Emitter
 {
