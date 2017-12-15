@@ -9,7 +9,7 @@ public:
 	ParticleBlueCircles(float x, float y, float z, float vx, float vy, float vz);
 	~ParticleBlueCircles();
 
-	void draw(ofImage* txt);
+	void draw();
 	void setDrag();
 	void setPath();
 

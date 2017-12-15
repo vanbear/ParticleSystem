@@ -29,10 +29,10 @@ class ofApp : public ofBaseApp{
 
 		// emitters stuff
 		int countParticles();
-		void activateAllEmitters();
-		void activateSelectedEmitter(int i);
-		void activateRingEmitters();
-		void activateNRandomEmitters(int n);
+		void activateAllEmitters(int selectedParticle);
+		void activateSelectedEmitter(int i, int selectedParticle);
+		void activateRingEmitters(int selectedParticle);
+		void activateNRandomEmitters(int n, int selectedParticle);
 
 		// sphere
 		ofIcoSpherePrimitive icoSphere;
@@ -42,18 +42,17 @@ class ofApp : public ofBaseApp{
 		
 		// drawing
 		ofTrueTypeFont f_particlesCountFont;
-		ofImage myTexture;
 
 		// audio
 		ofSoundPlayer music;
-		float audioPan, audioPanMax;
-		float avgSound; float avgSoundPrevious;
+		float avgSound;
 		float* fftSmoothed;
 		int nBandsToGet;
 		bool musicIsPlaying;
 
 		int m_tickCount;
 		int m_tickFrequency;
+
 		// setting togglers
 		bool debugActive;
 		bool rotateActive;

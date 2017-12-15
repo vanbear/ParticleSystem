@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Particle.h"
-#include "ParticleBlueCircles.h"
 
 class Emitter
 {
@@ -11,16 +10,17 @@ class Emitter
 
 		int getParticlesCount();
 		void insertToHolder(Particle* particle);
-		void activate();
+		void activate(int selectedParticle);
 
 		float getPositionX();
 		float getPositionY();
 		float getPositionZ();
 		void updatePosition(float x, float y, float z);
 
+		Particle* particle;
 		std::vector<Particle*> particlesHolder;
 
-		void drawParticles(ofImage* txt);
+		void drawParticles();
 		void drawSelf();
 		void updateParticles();
 

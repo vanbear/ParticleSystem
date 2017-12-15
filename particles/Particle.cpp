@@ -57,6 +57,7 @@ void Particle::setSpeed(float x, float y, float z)
 	this->m_speedZ = z;
 }
 
+// ------------------------------------- COLOR ---------------------------
 int Particle::getColorR()
 {
 	return m_colorA;
@@ -81,13 +82,14 @@ void Particle::setColor(int r, int g, int b, int a)
 	m_colorA = a;
 }
 
+// ------------------------------------- OTHERS ---------------------------
 bool Particle::isDead()
 {
 	if (m_lifespan <= 0) return true;
 	else return false;
 }
 
-void draw(ofImage* txt)
+void draw()
 {
 }
 

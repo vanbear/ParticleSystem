@@ -181,12 +181,16 @@
     <ClCompile Include="ofApp.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleBlueCircles.cpp" />
+    <ClCompile Include="ParticleRedCircles.cpp" />
+    <ClCompile Include="ParticleYellowCircles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="ofApp.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleBlueCircles.h" />
+    <ClInclude Include="ParticleRedCircles.h" />
+    <ClInclude Include="ParticleYellowCircles.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

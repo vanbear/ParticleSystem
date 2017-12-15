@@ -2,17 +2,20 @@
 #include "Emitter.h"
 #include "Particle.h"
 #include "ParticleBlueCircles.h"
+#include "ParticleYellowCircles.h"
 
 using namespace std;
 
-double icoPosX;
-double icoPosY;
+#define PARTICLE_BLUE_CIRCLE 0
+#define PARTICLE_YELLOW_CIRCLE 1
+#define PARTICLE_RED_CIRCLE 2
 
 //--------------------------------------------------------------
 void ofApp::setup(){
 	// --------------------------------------------- APP INITIALIZATION
 	// Window Settings
-	ofSetWindowShape(1024, 720);
+	//ofSetWindowShape(1024, 720);
+	ofSetFullscreen(1);
 	ofSetFrameRate(60);
 
 	//Scene Settings
@@ -23,13 +26,10 @@ void ofApp::setup(){
 	//Camera
 	ofEnableDepthTest();
 	ofSetVerticalSync(true);
+	camera.disableMouseInput();
 	
 
 	// -------------------------------------------------- MEDIA LOADING
-	// load texture
-	myTexture.loadImage("nova_1.png");
-	myTexture.setAnchorPoint(myTexture.getWidth() / 2, myTexture.getHeight() / 2);
-
 	// load debug info font
 	f_particlesCountFont.loadFont("verdana.ttf", 8);
 
@@ -71,7 +71,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	camera.setGlobalPosition(ofPoint(icoSphere.getX(), icoSphere.getY(), 600+(fftSmoothed[0]*10)));
+	
 	// --------------------------FFT SETTINGS
 	if (musicIsPlaying)
 		music.setPaused(false);
@@ -93,17 +93,21 @@ void ofApp::update() {
 	avgSound /= nBandsToGet;
 	ofSetBackgroundColor(ofColor(10+avgSound*25, 15+avgSound*50, 20+avgSound*100));;
 
+	// change camera distance depending on music
+	camera.setGlobalPosition(ofPoint(icoSphere.getX(), icoSphere.getY(), 600 + (fftSmoothed[0] * 10)));
+
 	// trigger emitters
 	if (m_tickCount == m_tickFrequency)
 	{
 		if (fftSmoothed[0] > 4)
-		{
-			activateAllEmitters();
-		}
-		if (fftSmoothed[27] > 0.4f)
-		{
-			activateRingEmitters();
-		}
+			activateAllEmitters(PARTICLE_BLUE_CIRCLE);
+
+		if (fftSmoothed[40] > 0.1f)
+			activateRingEmitters(PARTICLE_YELLOW_CIRCLE);
+
+		if (fftSmoothed[15] > 0.3f)
+			activateNRandomEmitters(5, PARTICLE_RED_CIRCLE);
+
 		m_tickCount = 0;
 	}
 	else
@@ -113,7 +117,6 @@ void ofApp::update() {
 	// spin dat sphere
 	float spinX = sin(ofGetElapsedTimef()*.35f)*(avgSound*10);
 	float spinY = cos(ofGetElapsedTimef()*.075f)*(avgSound*10);
-	cout << avgSound << endl;
 	//update vertices locations
 	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	if (rotateActive)
@@ -149,7 +152,7 @@ void ofApp::draw(){
 	// update particles as objects created by each emitter
 	for (int i = 0; i < v_emitters.size(); i++)
 	{
-		v_emitters[i]->drawParticles(&myTexture);
+		v_emitters[i]->drawParticles();
 		
 	}
 
@@ -166,6 +169,8 @@ void ofApp::draw(){
 	// debug info
 	if (debugActive)
 	{
+		camera.begin();
+		ofPushView();
 		// draw all emitters
 		for (size_t i = 0; i < v_emitters.size(); i++)
 		{
@@ -186,7 +191,8 @@ void ofApp::draw(){
 		// draw selected emitter (red)
 		ofSetColor(ofColor(255, 0, 0));
 		v_emitters[selectedEmitterIndex]->drawSelf();
-		
+		ofPopView();
+		camera.end();
 
 		// draw FFT preview
 		float width = (float)(5 * 128) / nBandsToGet;
@@ -236,19 +242,19 @@ void ofApp::keyPressed(int key){
 		// emitters 
 		case 'a':
 		case 'A':
-			activateAllEmitters();
+			activateAllEmitters(PARTICLE_BLUE_CIRCLE);
 			break;
 		case 's':
 		case 'S':
-			activateSelectedEmitter(selectedEmitterIndex);
+			activateSelectedEmitter(selectedEmitterIndex, PARTICLE_BLUE_CIRCLE);
 			break;
 		case 'z':
 		case 'Z':
-			activateRingEmitters();
+			activateRingEmitters(PARTICLE_YELLOW_CIRCLE);
 			break;
 		case 'x':
 		case 'X':
-			activateNRandomEmitters(10);
+			activateNRandomEmitters(10, PARTICLE_RED_CIRCLE);
 			break;
 		// debug mode
 		case 'd':
@@ -357,34 +363,34 @@ int ofApp::countParticles()
 	return s;
 }
 
-void ofApp::activateAllEmitters()
+void ofApp::activateAllEmitters(int selectedParticle)
 {
 	for (size_t i = 0; i < v_emitters.size(); i++)
 	{
-		v_emitters[i]->activate();
+		v_emitters[i]->activate(selectedParticle);
 	}
 }
 
-void ofApp::activateSelectedEmitter(int i)
+void ofApp::activateSelectedEmitter(int i, int selectedParticle)
 {
-		v_emitters[i]->activate();
+		v_emitters[i]->activate(selectedParticle);
 }
 
 
-void ofApp::activateRingEmitters()
+void ofApp::activateRingEmitters(int selectedParticle)
 {
 	for (int i = 0; i < size(t_RingEmittersIndex); i++)
 	{
 		ofSetColor(ofColor(0, 0, 255));
-		v_emitters[t_RingEmittersIndex[i]]->activate();
+		v_emitters[t_RingEmittersIndex[i]]->activate(selectedParticle);
 	}
 }
 
-void ofApp::activateNRandomEmitters(int n)
+void ofApp::activateNRandomEmitters(int n, int selectedParticle)
 {
 	for (int i = 0; i < n; i++)
 	{
 		int emitter = ofRandom(0, v_emitters.size());
-		activateSelectedEmitter(emitter);
+		activateSelectedEmitter(emitter, selectedParticle);
 	}
 }

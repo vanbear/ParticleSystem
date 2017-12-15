@@ -6,6 +6,8 @@
     <ClCompile Include="ofApp.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="ParticleBlueCircles.cpp" />
+    <ClCompile Include="ParticleYellowCircles.cpp" />
+    <ClCompile Include="ParticleRedCircles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="addons">
@@ -17,6 +19,8 @@
     <ClInclude Include="ofApp.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="ParticleBlueCircles.h" />
+    <ClInclude Include="ParticleYellowCircles.h" />
+    <ClInclude Include="ParticleRedCircles.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

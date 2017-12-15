@@ -1,5 +1,7 @@
 #include "Emitter.h"
 #include "ParticleBlueCircles.h"
+#include "ParticleYellowCircles.h"
+#include "ParticleRedCircles.h"
 #include "Particle.h"
 #include <ofGraphics.h>
 #include <ofAppRunner.h>
@@ -39,12 +41,9 @@ void Emitter::updatePosition(float x, float y, float z)
 
 
 
-void Emitter::insertToHolder(Particle* particle)
-{
-	particlesHolder.push_back(particle);
-}
 
-void Emitter::activate()
+
+void Emitter::activate(int selectedParticle)
 {
 	float x = this->m_posX;
 	float y = this->m_posY;
@@ -53,9 +52,29 @@ void Emitter::activate()
 	ofVec3f v_center(ofGetWidth()*0.5,ofGetHeight()*0.5,0.0); // center of the screen
 	ofVec3f dist = (v_em - v_center).getNormalized();
 
-	ParticleBlueCircles* particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
+	switch (selectedParticle)
+	{
+	case 0:
+		particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
+		break;
+	case 1:
+		particle = new ParticleYellowCircles(x, y, z, dist[0], dist[1], dist[2]);
+		break;
+	case 2:
+		particle = new ParticleRedCircles(x, y, z, dist[0], dist[1], dist[2]);
+		break;
+	default:
+		particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
+		break;
+	}
+	
 
 	insertToHolder(particle);
+}
+
+void Emitter::insertToHolder(Particle* particle)
+{
+	particlesHolder.push_back(particle);
 }
 
 int Emitter::getParticlesCount()
@@ -63,12 +82,12 @@ int Emitter::getParticlesCount()
 	return (int)this->particlesHolder.size();
 }
 
-void Emitter::drawParticles(ofImage* txt)
+void Emitter::drawParticles()
 {
 	if (this->particlesHolder.size()>0)
 		for (size_t i = 0; i < particlesHolder.size(); i++)
 		{
-			this->particlesHolder[i]->draw(txt);
+			this->particlesHolder[i]->draw();
 		}
 }
 void Emitter::drawSelf()

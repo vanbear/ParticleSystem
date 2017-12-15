@@ -15,16 +15,14 @@ ParticleBlueCircles::~ParticleBlueCircles()
 {
 }
 
-void ParticleBlueCircles::draw(ofImage* txt)
+void ParticleBlueCircles::draw()
 {
 	ofPushMatrix();
 	ofEnableBlendMode(OF_BLENDMODE_ADD); // additive blendmode
 	ofTranslate(0,0, this->getPositionZ()); // tanslate the image in z-axis basing off the object's position
 	// set color
 	ofSetColor(this->getColorR(), this->getColorG(), this->getColorB(), this->m_lifespan * 2);
-	// texture alternative (not used right now)
-	//txt->draw(this->getPositionX(), this->getPositionY());
-	// circle alternative
+	// circle
 	ofDrawCircle(this->getPositionX(), this->getPositionY(), this->getPositionZ(),3);
 	// set color to default
 	ofSetColor(ofColor(255, 255, 255));
