@@ -140,6 +140,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw(){
 	camera.begin();
+	ofPushView();
 
 	// draw icoSphere
 	ofSetColor(ofColor(200, 200, 200));
@@ -159,7 +160,9 @@ void ofApp::draw(){
 	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[1] * 10) + icoSphere.getRadius());
 	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[2] * 10) + icoSphere.getRadius());
 	ofFill();
-	
+
+	ofPopView();
+	camera.end();
 	// debug info
 	if (debugActive)
 	{
@@ -183,8 +186,7 @@ void ofApp::draw(){
 		// draw selected emitter (red)
 		ofSetColor(ofColor(255, 0, 0));
 		v_emitters[selectedEmitterIndex]->drawSelf();
-
-		camera.end();
+		
 
 		// draw FFT preview
 		float width = (float)(5 * 128) / nBandsToGet;
