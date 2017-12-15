@@ -14,7 +14,6 @@ using namespace std;
 void ofApp::setup(){
 	// --------------------------------------------- APP INITIALIZATION
 	// Window Settings
-	//ofSetWindowShape(1024, 720);
 	ofSetFullscreen(1);
 	ofSetFrameRate(60);
 
