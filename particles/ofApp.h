@@ -24,6 +24,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+		// camera
+		ofEasyCam camera;
+
+		// emitters stuff
 		int countParticles();
 		void activateAllEmitters();
 		void activateSelectedEmitter(int i);

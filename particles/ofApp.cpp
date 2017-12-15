@@ -20,6 +20,11 @@ void ofApp::setup(){
 	debugActive = true;
 	rotateActive = false;
 
+	//Camera
+	ofEnableDepthTest();
+	ofSetVerticalSync(true);
+	
+
 	// -------------------------------------------------- MEDIA LOADING
 	// load texture
 	myTexture.loadImage("nova_1.png");
@@ -66,6 +71,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	camera.setGlobalPosition(ofPoint(icoSphere.getX(), icoSphere.getY(), 600+(fftSmoothed[0]*10)));
 	// --------------------------FFT SETTINGS
 	if (musicIsPlaying)
 		music.setPaused(false);
@@ -85,6 +91,7 @@ void ofApp::update() {
 	}
 	// average loudness
 	avgSound /= nBandsToGet;
+	ofSetBackgroundColor(ofColor(10+avgSound*25, 15+avgSound*50, 20+avgSound*100));;
 
 	// trigger emitters
 	if (m_tickCount == m_tickFrequency)
@@ -132,6 +139,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	camera.begin();
 
 	// draw icoSphere
 	ofSetColor(ofColor(200, 200, 200));
@@ -176,6 +184,8 @@ void ofApp::draw(){
 		ofSetColor(ofColor(255, 0, 0));
 		v_emitters[selectedEmitterIndex]->drawSelf();
 
+		camera.end();
+
 		// draw FFT preview
 		float width = (float)(5 * 128) / nBandsToGet;
 		for (int i = 0; i < nBandsToGet; i++) {
@@ -187,6 +197,7 @@ void ofApp::draw(){
 		}
 
 	}
+	
 
 	// DRAW DEBUG INFO
 	ofSetColor(ofColor(255, 255, 255));
@@ -212,6 +223,7 @@ void ofApp::draw(){
 		"%.2f \n%.2f \n", 
 		fftSmoothed[0], fftSmoothed[27]);
 	if (debugActive) f_particlesCountFont.drawString(beatStr, ofGetWidth()-50, 10);
+	
 }
 
 //--------------------------------------------------------------
