@@ -35,11 +35,10 @@ void ofApp::setup(){
 	}
 	nBandsToGet = 128;
 	m_tickCount = 0;
-	m_tickFrequency = 10;
+	m_tickFrequency = 2;
 	// load song
 	musicIsPlaying = false;
-	music.loadSound("thewolf.mp3");
-	//music.loadSound("inflames_deadeyes.mp3");
+	music.loadSound("robinson.mp3");
 	music.setVolume(1.0f);
 	music.play();
 	music.setLoop(true);
@@ -80,7 +79,7 @@ void ofApp::update() {
 	float * val = ofSoundGetSpectrum(nBandsToGet);				// request 128 values for fft
 	avgSound = 0;
 	for (int i = 0; i < nBandsToGet; i++) {
-		fftSmoothed[i] *= 0.10f;								// let the smoothed calue sink to zero:
+		fftSmoothed[i] *= 0.6f;								// let the smoothed calue sink to zero:
 		if (fftSmoothed[i] < val[i]) fftSmoothed[i] = val[i];	// take the max, either the smoothed or the incoming:
 		avgSound += fftSmoothed[i];
 	}
@@ -88,7 +87,7 @@ void ofApp::update() {
 	avgSound /= nBandsToGet;
 
 	// trigger emitters
-	if (m_tickCount < m_tickFrequency)
+	if (m_tickCount == m_tickFrequency)
 	{
 		if (fftSmoothed[0] > 4)
 		{
@@ -98,16 +97,16 @@ void ofApp::update() {
 		{
 			activateRingEmitters();
 		}
-		m_tickCount++;
+		m_tickCount = 0;
 	}
 	else
-		m_tickCount = 0;
+		m_tickCount++;
 
 	// -------------------------- OBJECTS
 	// spin dat sphere
-	float spinX = sin(ofGetElapsedTimef()*.35f);
-	float spinY = cos(ofGetElapsedTimef()*.075f);
-
+	float spinX = sin(ofGetElapsedTimef()*.35f)*(avgSound*10);
+	float spinY = cos(ofGetElapsedTimef()*.075f)*(avgSound*10);
+	cout << avgSound << endl;
 	//update vertices locations
 	vector<ofVec3f> & icoSphereVertices = icoSphere.getMesh().getVertices();
 	if (rotateActive)
@@ -126,6 +125,9 @@ void ofApp::update() {
 		v_emitters[i]->updateParticles();
 	}
 
+
+	
+
 }
 
 //--------------------------------------------------------------
@@ -141,6 +143,14 @@ void ofApp::draw(){
 		v_emitters[i]->drawParticles(&myTexture);
 		
 	}
+
+	// draw inside circle
+	ofSetColor(ofColor(255, 255, 255, 50));
+	ofNoFill();
+	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[0] * 10) + icoSphere.getRadius());
+	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[1] * 10) + icoSphere.getRadius());
+	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[2] * 10) + icoSphere.getRadius());
+	ofFill();
 	
 	// debug info
 	if (debugActive)
@@ -169,6 +179,8 @@ void ofApp::draw(){
 		// draw FFT preview
 		float width = (float)(5 * 128) / nBandsToGet;
 		for (int i = 0; i < nBandsToGet; i++) {
+			if (i % 10 == 0) ofSetColor(ofColor(255, 0, 0));
+			else ofSetColor(ofColor(255, 255, 255));
 			// (we use negative height here, because we want to flip them
 			// because the top corner is 0,0)
 			ofDrawRectangle(i*width, ofGetHeight(), width, -(fftSmoothed[i] * 50));
