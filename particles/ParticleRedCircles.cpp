@@ -34,13 +34,3 @@ void ParticleRedCircles::draw()
 	ofDisableBlendMode();
 	ofPopMatrix();
 }
-
-void ParticleRedCircles::setPath()
-{
-
-}
-
-void ParticleRedCircles::setDrag()
-{
-
-}

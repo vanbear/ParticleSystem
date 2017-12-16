@@ -8,8 +8,6 @@ public:
 	~ParticleRedCircles();
 
 	void draw();
-	void setDrag();
-	void setPath();
 
 private:
 	int size;

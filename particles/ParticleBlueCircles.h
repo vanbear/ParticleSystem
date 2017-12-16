@@ -10,8 +10,6 @@ public:
 	~ParticleBlueCircles();
 
 	void draw();
-	void setDrag();
-	void setPath();
 
 };
 

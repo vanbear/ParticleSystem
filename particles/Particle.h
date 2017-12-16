@@ -23,14 +23,11 @@ public:
 	ofColor getColor();
 	void setColor(ofColor color);
 
-	// moving mutators
-	virtual void setPath() = 0;
-	virtual void setDrag() = 0;
-	bool isDead();
-
 	// drawing
 	virtual void draw() = 0;
 
+	// lifetime
+	bool isDead();
 	int m_lifespan;
 
 private:

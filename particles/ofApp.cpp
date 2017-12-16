@@ -81,9 +81,9 @@ void ofApp::update() {
 
 	ofSoundUpdate(); // update the sound playing system
 
-					 //	grab the fft, and put in into a "smoothed" array,
-					 //	by taking maximums, as peaks and then smoothing downward
-	float * val = ofSoundGetSpectrum(nBandsToGet);				// request 128 values for fft
+	//	grab the fft, and put in into a "smoothed" array,
+	//	by taking maximums, as peaks and then smoothing downward
+	float * val = ofSoundGetSpectrum(nBandsToGet);			// request 128 values for fft
 	avgSound = 0;
 	for (int i = 0; i < nBandsToGet; i++) {
 		fftSmoothed[i] *= 0.6f;								// let the smoothed calue sink to zero:
@@ -154,7 +154,7 @@ void ofApp::draw(){
 		v_emitters[i]->drawParticles();
 	}
 
-	// draw music-sensitive circles circle
+	// draw music-sensitive circles
 	ofEnableAlphaBlending();
 	ofSetColor(ofColor(255, 255, 255, 70));
 	ofNoFill();
@@ -209,7 +209,7 @@ void ofApp::draw(){
 
 	// DRAW DEBUG INFO
 	ofSetColor(ofColor(255, 255, 255));
-	char fpsStr[255]; // an array of chars
+	char fpsStr[300]; // an array of chars
 	// create string
 	sprintf(fpsStr, 
 		"\
@@ -223,15 +223,10 @@ void ofApp::draw(){
 		Z - activate ring emitters\n\
 		X - activate random emitters\n\
 		P - play/pause song\n\
+		L - load another song\n\
 		", 
 		ofGetFrameRate(), countParticles(), selectedEmitterIndex);
 	if (debugActive) f_particlesCountFont.drawString(fpsStr, 10, 10);
-
-	char beatStr[255];
-	sprintf(beatStr,
-		"%.2f \n%.2f \n", 
-		fftSmoothed[0], fftSmoothed[27]);
-	if (debugActive) f_particlesCountFont.drawString(beatStr, ofGetWidth()-50, 10);
 
 	// draw play/pause image
 	ofEnableAlphaBlending();
@@ -240,11 +235,10 @@ void ofApp::draw(){
 	else
 	{
 		img_pause.draw(ofGetWidth() - 50, ofGetHeight() - 50);
-		float width = f_particlesCountFont.stringWidth("Press P to play.");
-		f_particlesCountFont.drawString("Press P to play.", ofGetWidth() - width - 25, ofGetHeight() - 10);
+		float width = f_particlesCountFont.stringWidth("Press P to play or L to load other song.");
+		f_particlesCountFont.drawString("Press P to play or L to load other song.", ofGetWidth() - width - 25, ofGetHeight() - 10);
 	}
 		
-	
 }
 
 //--------------------------------------------------------------

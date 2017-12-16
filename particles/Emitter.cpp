@@ -30,9 +30,6 @@ void Emitter::updatePosition(ofVec3f pos)
 
 void Emitter::activate(int selectedParticle)
 {
-	float x = this->v_position.x;
-	float y = this->v_position.y;
-	float z = this->v_position.z;
 	ofVec3f v_center(ofGetWidth()*0.5,ofGetHeight()*0.5,0.0); // center of the screen
 	ofVec3f vel = (this->v_position - v_center).getNormalized(); // particle direction, away from the center of the screen
 

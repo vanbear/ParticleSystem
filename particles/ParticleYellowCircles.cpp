@@ -35,13 +35,3 @@ void ParticleYellowCircles::draw()
 
 	ofPopMatrix();
 }
-
-void ParticleYellowCircles::setPath()
-{
-
-}
-
-void ParticleYellowCircles::setDrag()
-{
-
-}
