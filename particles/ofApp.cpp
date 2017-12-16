@@ -19,8 +19,8 @@ void ofApp::setup(){
 
 	//Scene Settings
 	ofSetBackgroundColor(10, 15, 20);
-	debugActive = true;
-	rotateActive = false;
+	debugActive = false;
+	rotateActive = true;
 
 	//Camera
 	ofEnableDepthTest();
@@ -31,6 +31,10 @@ void ofApp::setup(){
 	// -------------------------------------------------- MEDIA LOADING
 	// load debug info font
 	f_particlesCountFont.loadFont("verdana.ttf", 8);
+
+	// load images
+	img_pause.loadImage("pause.png");
+	img_play.loadImage("play.png");
 
 	// FFT initialization
 	fftSmoothed = new float[8192];
@@ -60,10 +64,8 @@ void ofApp::setup(){
 	//...and create emitters in these locations
 	for (size_t i=0; i < icoSphereVertices.size(); i++)
 	{
-		float x = icoSphere.getX() + icoSphereVertices[i][0];
-		float y = icoSphere.getY() + icoSphereVertices[i][1];
-		float z = icoSphere.getZ() + icoSphereVertices[i][2];
-		v_emitters.push_back(new Emitter(x, y, z));
+		ofVec3f temp_pos = icoSphere.getPosition() + icoSphereVertices[i];
+		v_emitters.push_back(new Emitter(temp_pos));
 	}
 
 }
@@ -127,9 +129,7 @@ void ofApp::update() {
 	for (int i = 0; i < icoSphereVertices.size(); i++)
 	{
 		v_emitters[i]->updatePosition(
-			icoSphereVertices[i][0]+icoSphere.getX(), 
-			icoSphereVertices[i][1]+icoSphere.getY(), 
-			icoSphereVertices[i][2]+icoSphere.getZ()
+			icoSphere.getPosition() + icoSphereVertices[i]
 		);
 		v_emitters[i]->updateParticles();
 	}
@@ -152,11 +152,11 @@ void ofApp::draw(){
 	for (int i = 0; i < v_emitters.size(); i++)
 	{
 		v_emitters[i]->drawParticles();
-		
 	}
 
-	// draw inside circle
-	ofSetColor(ofColor(255, 255, 255, 50));
+	// draw music-sensitive circles circle
+	ofEnableAlphaBlending();
+	ofSetColor(ofColor(255, 255, 255, 70));
 	ofNoFill();
 	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[0] * 10) + icoSphere.getRadius());
 	ofDrawCircle(icoSphere.getX(), icoSphere.getY(), (fftSmoothed[1] * 10) + icoSphere.getRadius());
@@ -170,26 +170,27 @@ void ofApp::draw(){
 	{
 		camera.begin();
 		ofPushView();
-		// draw all emitters
-		for (size_t i = 0; i < v_emitters.size(); i++)
-		{
-			v_emitters[i]->drawSelf();
-		}
-		
+
+		// draw selected emitter (red)
+		ofSetColor(ofColor(255, 0, 0));
+		v_emitters[selectedEmitterIndex]->drawSelf();
+
+		// draw first emitter (green)
+		ofSetColor(ofColor(0, 255, 0));
+		v_emitters[0]->drawSelf();
+
 		// draw ring emitters (blue)
 		for (int i = 0; i < size(t_RingEmittersIndex); i++)
 		{
 			ofSetColor(ofColor(0, 0, 255));
 			v_emitters[t_RingEmittersIndex[i]]->drawSelf();
 		}
+		// draw all emitters
+		for (size_t i = 0; i < v_emitters.size(); i++)
+		{
+			v_emitters[i]->drawSelf();
+		}		
 
-		// draw first emitter (green)
-		ofSetColor(ofColor(0, 255, 0));
-		v_emitters[0]->drawSelf();
-
-		// draw selected emitter (red)
-		ofSetColor(ofColor(255, 0, 0));
-		v_emitters[selectedEmitterIndex]->drawSelf();
 		ofPopView();
 		camera.end();
 
@@ -220,16 +221,29 @@ void ofApp::draw(){
 		A - activate all emitters\n\
 		S - activate selected emitter\n\
 		Z - activate ring emitters\n\
-		X - activate random emitters\
+		X - activate random emitters\n\
+		P - play/pause song\n\
 		", 
 		ofGetFrameRate(), countParticles(), selectedEmitterIndex);
-	if (debugActive) f_particlesCountFont.drawString(fpsStr, 1, 10);
+	if (debugActive) f_particlesCountFont.drawString(fpsStr, 10, 10);
 
 	char beatStr[255];
 	sprintf(beatStr,
 		"%.2f \n%.2f \n", 
 		fftSmoothed[0], fftSmoothed[27]);
 	if (debugActive) f_particlesCountFont.drawString(beatStr, ofGetWidth()-50, 10);
+
+	// draw play/pause image
+	ofEnableAlphaBlending();
+	if (musicIsPlaying)
+		img_play.draw(ofGetWidth() - 50, ofGetHeight() - 50);
+	else
+	{
+		img_pause.draw(ofGetWidth() - 50, ofGetHeight() - 50);
+		float width = f_particlesCountFont.stringWidth("Press P to play.");
+		f_particlesCountFont.drawString("Press P to play.", ofGetWidth() - width - 25, ofGetHeight() - 10);
+	}
+		
 	
 }
 
@@ -303,7 +317,21 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+	if (key == 'l' || key == 'L')
+	{
+		ofSetFullscreen(0);
+		ofFileDialogResult openFileResult = ofSystemLoadDialog("Select a mp3");
+		if (openFileResult.bSuccess)
+		{
+			musicIsPlaying = false;
+			music.stop();
+			loadSelectedMusic(openFileResult);
+		}
+		else
+			ofSetFullscreen(1);
 
+	}
+			
 }
 
 //--------------------------------------------------------------
@@ -392,4 +420,11 @@ void ofApp::activateNRandomEmitters(int n, int selectedParticle)
 		int emitter = ofRandom(0, v_emitters.size());
 		activateSelectedEmitter(emitter, selectedParticle);
 	}
+}
+
+void ofApp::loadSelectedMusic(ofFileDialogResult openFileResult)
+{
+	ofSetFullscreen(1);
+	music.load(openFileResult.getPath());
+	music.play();
 }

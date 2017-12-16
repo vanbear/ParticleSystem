@@ -7,11 +7,9 @@
 #include <ofAppRunner.h>
 
 
-Emitter::Emitter(float x, float y, float z)
+Emitter::Emitter(ofVec3f pos)
 {
-	this->m_posX = x;
-	this->m_posY = y;
-	this->m_posZ = z;
+	v_position = pos;
 	//std::cout << "Emitter created at " << x <<" "<< y << " "<< z << std::endl;
 }
 
@@ -20,51 +18,37 @@ Emitter::~Emitter()
 {
 }
 
-float Emitter::getPositionX()
+ofVec3f Emitter::getPosition()
 {
-	return this->m_posX;
+	return this->v_position;
 }
-float Emitter::getPositionY()
+void Emitter::updatePosition(ofVec3f pos)
 {
-	return this->m_posY;
+	this->v_position = pos;
 }
-float Emitter::getPositionZ()
-{
-	return this->m_posZ;
-}
-void Emitter::updatePosition(float x, float y, float z)
-{
-	this->m_posX = x;
-	this->m_posY = y;
-	this->m_posZ = z;
-}
-
-
-
 
 
 void Emitter::activate(int selectedParticle)
 {
-	float x = this->m_posX;
-	float y = this->m_posY;
-	float z = this->m_posZ;
-	ofVec3f v_em(x,y,z); // emitter position
+	float x = this->v_position.x;
+	float y = this->v_position.y;
+	float z = this->v_position.z;
 	ofVec3f v_center(ofGetWidth()*0.5,ofGetHeight()*0.5,0.0); // center of the screen
-	ofVec3f dist = (v_em - v_center).getNormalized();
+	ofVec3f vel = (this->v_position - v_center).getNormalized(); // particle direction, away from the center of the screen
 
 	switch (selectedParticle)
 	{
 	case 0:
-		particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
+		particle = new ParticleBlueCircles(this->v_position, vel);
 		break;
 	case 1:
-		particle = new ParticleYellowCircles(x, y, z, dist[0], dist[1], dist[2]);
+		particle = new ParticleYellowCircles(this->v_position, vel);
 		break;
 	case 2:
-		particle = new ParticleRedCircles(x, y, z, dist[0], dist[1], dist[2]);
+		particle = new ParticleRedCircles(this->v_position, vel);
 		break;
 	default:
-		particle = new ParticleBlueCircles(x, y, z, dist[0], dist[1], dist[2]);
+		particle = new ParticleBlueCircles(this->v_position, vel);
 		break;
 	}
 	
@@ -93,9 +77,10 @@ void Emitter::drawParticles()
 void Emitter::drawSelf()
 {
 	float size = 10.0f;
-	float x = this->m_posX;
-	float y = this->m_posY;
-	float z = this->m_posZ;
+
+	float x = this->v_position.x;
+	float y = this->v_position.y;
+	float z = this->v_position.z;
 	
 	ofSetLineWidth(4);
 	ofDrawLine(x - size, y, z, x + size, y, z);

@@ -4,7 +4,7 @@ class ParticleYellowCircles :
 	public Particle
 {
 public:
-	ParticleYellowCircles(float x, float y, float z, float vx, float vy, float vz);
+	ParticleYellowCircles(ofVec3f pos, ofVec3f spd);
 	~ParticleYellowCircles();
 
 	void draw();

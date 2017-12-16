@@ -12,74 +12,41 @@ Particle::~Particle()
 }
 
 // ---------------------------------- POSITION ----------------------------
-float Particle::getPositionX()
+ofVec3f Particle::getPosition()
 {
-	return m_posX;
+	return this->v_position;
 }
-float Particle::getPositionY()
-{
-	return m_posY;
-}
-float Particle::getPositionZ()
-{
-	return m_posZ;
-}
+
 void Particle::updatePosition()
 {
-	m_posX += m_speedX;
-	m_posY += m_speedY;
-	m_posZ += m_speedZ;
+	this->v_position += this->v_speed;
 }
-void Particle::setPosition(float x, float y, float z)
+
+void Particle::setPosition(ofVec3f pos)
 {
-	m_posX = x;
-	m_posY = y;
-	m_posZ = z;
+	this->v_position = pos;
 }
 
 // ------------------------------------- SPEED ---------------------------
-float Particle::getSpeedX()
+ofVec3f Particle::getSpeed()
 {
-	return m_speedX;
+	return this->v_speed;
 }
-float Particle::getSpeedY()
+
+void Particle::setSpeed(ofVec3f spd)
 {
-	return m_speedY;
-}
-float Particle::getSpeedZ()
-{
-	return m_speedZ;
-}
-void Particle::setSpeed(float x, float y, float z)
-{
-	this->m_speedX = x;
-	this->m_speedY = y;
-	this->m_speedZ = z;
+	this->v_speed = spd;
 }
 
 // ------------------------------------- COLOR ---------------------------
-int Particle::getColorR()
+ofColor Particle::getColor()
 {
-	return m_colorA;
+	return this->v_color;
 }
-int Particle::getColorG()
+
+void Particle::setColor(ofColor color)
 {
-	return m_colorG;
-}
-int Particle::getColorB()
-{
-	return m_colorB;
-}
-int Particle::getColorA()
-{
-	return m_colorA;
-}
-void Particle::setColor(int r, int g, int b, int a)
-{
-	m_colorR = r;
-	m_colorG = g;
-	m_colorB = b;
-	m_colorA = a;
+	this->v_color = color;
 }
 
 // ------------------------------------- OTHERS ---------------------------

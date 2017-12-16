@@ -5,17 +5,15 @@
 class Emitter
 {
 	public:
-		Emitter(float x, float y, float z);
+		Emitter(ofVec3f pos);
 		~Emitter();
 
 		int getParticlesCount();
 		void insertToHolder(Particle* particle);
 		void activate(int selectedParticle);
 
-		float getPositionX();
-		float getPositionY();
-		float getPositionZ();
-		void updatePosition(float x, float y, float z);
+		ofVec3f getPosition();
+		void updatePosition(ofVec3f pos);
 
 		Particle* particle;
 		std::vector<Particle*> particlesHolder;
@@ -25,9 +23,7 @@ class Emitter
 		void updateParticles();
 
 	private:
-		float m_posX;
-		float m_posY;
-		float m_posZ;
+		ofVec3f v_position;
 
 };
 

@@ -44,6 +44,8 @@ class ofApp : public ofBaseApp{
 		ofTrueTypeFont f_particlesCountFont;
 
 		// audio
+		void loadSelectedMusic(ofFileDialogResult openFileResult);
+
 		ofSoundPlayer music;
 		float avgSound;
 		float* fftSmoothed;
@@ -52,6 +54,9 @@ class ofApp : public ofBaseApp{
 
 		int m_tickCount;
 		int m_tickFrequency;
+
+		ofImage img_pause;
+		ofImage img_play;
 
 		// setting togglers
 		bool debugActive;

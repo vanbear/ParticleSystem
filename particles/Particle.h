@@ -10,26 +10,18 @@ public:
 	Particle();
 	~Particle();
 
-	int m_lifespan;
-
-	// GETTERS SETTERS
 	// position
-	float getPositionX();
-	float getPositionY();
-	float getPositionZ();
+	ofVec3f getPosition();
 	void updatePosition();
-	void setPosition(float x, float y, float z);
+	void setPosition(ofVec3f pos);
+
 	// speed
-	float getSpeedX();
-	float getSpeedY();
-	float getSpeedZ();
-	void setSpeed(float x, float y, float z);
+	ofVec3f getSpeed();
+	void setSpeed(ofVec3f pos);
+
 	// color
-	int getColorR();
-	int getColorG();
-	int getColorB();
-	int getColorA();
-	void setColor(int r, int g, int b, int a);
+	ofColor getColor();
+	void setColor(ofColor color);
 
 	// moving mutators
 	virtual void setPath() = 0;
@@ -39,16 +31,11 @@ public:
 	// drawing
 	virtual void draw() = 0;
 
+	int m_lifespan;
+
 private:
-	float m_posX;
-	float m_posY;
-	float m_posZ;
-	float m_speedX;
-	float m_speedY;
-	float m_speedZ;
-	int m_colorR;
-	int m_colorG;
-	int m_colorB;
-	int m_colorA;
+	ofVec3f v_position;
+	ofVec3f v_speed;
+	ofColor v_color;
 	
 };
